@@ -32,5 +32,6 @@ return [
         'collection'    => Nurmanhabib\Kewilayahan\Outputs\CollectionOutput::class,
         'json'          => Nurmanhabib\Kewilayahan\Outputs\JsonOutput::class,
         'api'           => Nurmanhabib\Kewilayahan\Outputs\JsonApiOutput::class,
+        'arraypluck'    => Nurmanhabib\Kewilayahan\Outputs\PluckedArrayOutput::class,
     ],
 ];
