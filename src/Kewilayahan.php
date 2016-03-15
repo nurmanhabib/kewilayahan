@@ -10,7 +10,9 @@ use Nurmanhabib\Kewilayahan\Factories\OutputFactory;
 
 class Kewilayahan
 {
-    protected $datasouce;
+    use KewilayahanFormTrait;
+    
+    protected $datasource;
     protected $output;
     protected $outputCallback;
     protected $config = [];
@@ -28,7 +30,7 @@ class Kewilayahan
 
     public function setDataSource(DataSourceContract $datasource)
     {
-        $this->datasouce = $datasource;
+        $this->datasource = $datasource;
 
         return $this;
     }
@@ -91,12 +93,17 @@ class Kewilayahan
             return $this->loadCallback($tableOrArray, $whereOrCallback);
         }
 
-        $tableName      = $tableOrArray ?: $this->tableName;
-        $tableWhereId   = $whereOrCallback ?: $this->tableWhereId;
+        if (is_array($tableOrArray) && $whereOrCallback === null) {
+            $tableName      = array_key_exists(0, $tableOrArray) ? $tableOrArray[0] : $this->tableName;
+            $tableWhereId   = array_key_exists(1, $tableOrArray) ? $tableOrArray[1] : $this->tableWhereId;
+        } else {
+            $tableName      = $tableOrArray ?: $this->tableName;
+            $tableWhereId   = $whereOrCallback ?: $this->tableWhereId;
+        }
 
         if ($tableWhereId === 0) {
             $method = 'getAll' . ucfirst($tableName);
-            $data   = $this->datasouce->{$method}();
+            $data   = $this->datasource->{$method}();
             
             return $this->response($data);
         } else {
@@ -121,23 +128,30 @@ class Kewilayahan
         return $callback($output);
     }
 
+    public function loadProvinsi()
+    {
+        $data = $this->datasource->getAllProvinsi();
+
+        return $this->response($data);
+    }
+
     public function loadKabkota($provinsi_id)
     {
-        $data = $this->datasouce->getKabkotaByProvinsi($provinsi_id);
+        $data = $this->datasource->getKabkotaByProvinsi($provinsi_id);
 
         return $this->response($data);
     }
 
     public function loadKecamatan($kabkota_id)
     {
-        $data = $this->datasouce->getKecamatanByKabkota($kabkota_id);
+        $data = $this->datasource->getKecamatanByKabkota($kabkota_id);
 
         return $this->response($data);
     }
 
     public function loadDesa($kecamatan_id)
     {
-        $data = $this->datasouce->getDesaByKecamatan($kecamatan_id);
+        $data = $this->datasource->getDesaByKecamatan($kecamatan_id);
 
         return $this->response($data);
     }
@@ -168,5 +182,15 @@ class Kewilayahan
     public function getConfig()
     {
         return $this->config;
+    }
+
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    public function getTableWhereId()
+    {
+        return $this->tableWhereId;
     }
 }
