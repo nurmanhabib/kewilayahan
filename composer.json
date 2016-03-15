@@ -1,0 +1,24 @@
+{
+    "name": "nurmanhabib/kewilayahan",
+    "description": "API Data Wilayah Provinsi, Kota/Kab, Kecamatan, Kel/Desa di Indonesia dengan data dari BPS Tahun 2013.",
+    "authors": [
+        {
+            "name": "Habib Nurrahman",
+            "email": "nurmanhabib@yahoo.co.id"
+        }
+    ],
+    "require": {
+        "illuminate/database": "5.*",
+        "illuminate/support": "5.*"
+    },
+    "autoload": {
+        "files": [
+            "database/migrations/seeds/KewilayahanSeeder.php"
+        ],
+        "psr-4": {
+            "Nurmanhabib\\Kewilayahan\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "stable"
+}
