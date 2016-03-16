@@ -8,7 +8,7 @@ return [
 
     'api' => [
         'enable'    => true,
-        'path'      => 'api/v1/kewilayahan',
+        'path'      => 'api/v1/kewilayahan.json',
     ],
 
     'datasources' => [
