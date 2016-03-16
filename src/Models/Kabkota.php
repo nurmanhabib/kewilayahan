@@ -5,6 +5,10 @@ namespace Nurmanhabib\Kewilayahan\Models;
 class Kabkota extends Model
 {
     protected $table = 'kewilayahan_kabkota';
+    protected $casts = [
+        'id' => 'string',
+        'provinsi_id' => 'string',
+    ];
     public $timestamps = false;
 
     public function provinsi()

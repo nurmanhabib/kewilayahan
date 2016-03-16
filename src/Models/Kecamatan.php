@@ -5,6 +5,10 @@ namespace Nurmanhabib\Kewilayahan\Models;
 class Kecamatan extends Model
 {
     protected $table = 'kewilayahan_kecamatan';
+    protected $casts = [
+        'id' => 'string',
+        'kabkota_id' => 'string',
+    ];
     public $timestamps = false;
 
     public function kabkota()
