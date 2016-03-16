@@ -87,7 +87,7 @@ class Kewilayahan
         }
     }
 
-    public function load($tableOrArray = null, $whereOrCallback = null)
+    public function load($tableOrArray = null, $whereOrCallback = null, $forceParent = true)
     {
         if (is_callable($whereOrCallback)) {
             return $this->loadCallback($tableOrArray, $whereOrCallback);
@@ -101,7 +101,7 @@ class Kewilayahan
             $tableWhereId   = $whereOrCallback ?: $this->tableWhereId;
         }
 
-        if ($tableWhereId === 0) {
+        if ($tableWhereId === 0 && $forceParent) {
             $method = 'getAll' . ucfirst($tableName);
             $data   = $this->datasource->{$method}();
             
