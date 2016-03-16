@@ -19,9 +19,12 @@ class KewilayahanServiceProvider extends ServiceProvider
     public function register()
     {
         $config = ConfigLoader::load();
-        $config->appends(
-            $this->app['config']->get('kewilayahan')
-        );
+
+        if ($this->app['config']->has('kewilayahan')) {
+            $config->appends(
+                $this->app['config']->get('kewilayahan')
+            );
+        }
 
         $this->app['config']->set([
             'kewilayahan' => $config->toArray()
@@ -73,7 +76,7 @@ class KewilayahanServiceProvider extends ServiceProvider
         $filename = date('Y_m_d_His', time()) . '_create_kewilayahan_tables.php';
 
         $this->publishes([
-            __DIR__.'/../database/migrations/config.php' => $this->app->databasePath('migrations/' . $filename),
+            __DIR__.'/../database/migrations/2016_03_13_030715_create_kewilayahan_tables.php' => $this->app->databasePath() . '/migrations/' . $filename,
         ], 'migration');
     }
 
