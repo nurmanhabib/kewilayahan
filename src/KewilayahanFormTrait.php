@@ -4,14 +4,25 @@ namespace Nurmanhabib\Kewilayahan;
 
 trait KewilayahanFormTrait
 {
-    public function formSelect($tableAndWhereId = 'provinsi', $selected = null, $attributes = [])
+    public function formSelect($fieldName, $tableAndWhereId = 'provinsi', $selected = null, $attributes = [])
     {
         $this->setOutput('arraypluck');
 
-        $options    = $this->load($tableAndWhereId);
-        $fieldName  = $this->getTableName() . '_id';
+        $options    = $this->load($tableAndWhereId, null, false);
 
-        return $this->getFormBuilder($fieldName, $options, $selected, array_merge(['class' => 'form-control'], $attributes));
+        if (is_array($tableAndWhereId)) {
+            $tableName = $tableAndWhereId[0];
+        } else {
+            $tableName = $tableAndWhereId;
+        }
+
+        $fieldId    = $this->getFieldId($tableName);
+        $attributes = array_merge(
+            ['class' => 'form-control', 'id' => $fieldId],
+            $attributes
+        );
+
+        return $this->getFormBuilder($fieldName, $options, $selected, $attributes);
     }
 
     private function getFormBuilder($fieldName, $options, $selected, $extras)
@@ -34,5 +45,30 @@ trait KewilayahanFormTrait
         $html .= '</select>';
 
         return $html;
+    }
+
+    private function getFieldId($table)
+    {
+        $fields = [
+            'provinsi'  => 'provinsi_id',
+            'kabkota'   => 'kabkota_id',
+            'kecamatan' => 'kecamatan_id',
+            'desa'      => 'desa_id',
+        ];
+
+        return $fields[$table];
+    }
+
+    public function script()
+    {
+        $loading    = 'Loading...';
+        $url        = url($this->config['api']['path']);
+
+        $script  = "<script>var url = '$url';";
+        $script .= "var loading = '$loading';" . PHP_EOL;
+        $script .= file_get_contents(__DIR__ . '/../assets/kewilayahan.chained.js');
+        $script .= "</script>";
+        
+        return $script;
     }
 }
